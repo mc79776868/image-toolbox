@@ -1075,6 +1075,8 @@ input[type="color"] {
   .header h1 { font-size: 17px; }
   .header-logo { width: 28px; height: 28px; font-size: 15px; }
   .header-reload-btn, .header-tutorial-btn { font-size: 12px; padding: 4px 10px; }
+  /* 移动端隐藏次要按钮，避免超出 */
+  #about-btn, #privacy-btn, #contact-btn { display: none; }
   .main { padding: 16px 12px 0; }
   .card { padding: 16px; }
   .tabs { gap: 3px; padding: 4px; }
@@ -2122,15 +2124,22 @@ input[type="color"] {
 // ============================================================
 function updateVisitorCounter() {
   const STORAGE_KEY = 'image-toolbox-visitor-count';
+  console.log('[updateVisitorCounter] 开始运行');
   try {
     let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
+    console.log('[updateVisitorCounter] 从 localStorage 读取到:', count);
     count++;
     localStorage.setItem(STORAGE_KEY, count.toString());
+    console.log('[updateVisitorCounter] 更新后为:', count, ' 已保存');
     const countElement = document.getElementById('visitor-count');
     if (countElement) {
       countElement.textContent = count.toLocaleString();
+      console.log('[updateVisitorCounter] 已更新页面显示');
+    } else {
+      console.error('[updateVisitorCounter] 找不到 #visitor-count 元素!');
     }
   } catch (e) {
+    console.error('[updateVisitorCounter] localStorage 异常:', e);
     const countElement = document.getElementById('visitor-count');
     if (countElement) {
       countElement.textContent = '-';
@@ -4657,9 +4666,22 @@ function translatePage(lang) {
   document.title = t["page-title"];
   
   document.querySelector('.header h1').textContent = t["header-title"];
-  var vcSpan = document.getElementById('visitor-count');
-  if (vcSpan && vcSpan.previousSibling) {
-    vcSpan.previousSibling.textContent = '👁️ ' + t["visitor-count"] + ': ';
+  
+  // 直接从 localStorage 读取最新计数（不从 DOM 读）
+  var savedCount = null;
+  try {
+    savedCount = localStorage.getItem('image-toolbox-visitor-count');
+  } catch (e) {}
+  
+  // 重建翻译文本
+  document.querySelector('.visitor-counter').innerHTML = '👁️ ' + t["visitor-count"] + ': <span id="visitor-count">0</span>';
+  
+  // 恢复 localStorage 中的计数
+  if (savedCount) {
+    var newVcSpan = document.getElementById('visitor-count');
+    if (newVcSpan) {
+      newVcSpan.textContent = savedCount;
+    }
   }
   document.getElementById('reload-btn').textContent = t["reload-btn"];
   document.getElementById('tutorial-btn').textContent = t["tutorial-btn"];
@@ -4800,6 +4822,7 @@ function translatePage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+  console.log('[DOMContentLoaded] 页面加载完成，开始翻译和更新计数');
   translatePage(getBrowserLang());
   updateVisitorCounter();
 });
