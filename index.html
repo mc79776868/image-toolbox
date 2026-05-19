@@ -4472,6 +4472,7 @@ const translations = {
     "grid9-merge-download": "下载拼图",
     "freepuzzle-download": "下载拼贴画",
     "qrcode-download": "下载二维码",
+    "idphoto-sample-label": "已取样颜色:",
     "format-select": "目标格式",
     "format-quality": "图片质量",
     "crop-apply": "裁切",
@@ -4585,6 +4586,7 @@ const translations = {
     "grid9-merge-download": "Download Collage",
     "freepuzzle-download": "Download Collage",
     "qrcode-download": "Download QR Code",
+    "idphoto-sample-label": "Sampled Color:",
     "format-select": "Target Format",
     "format-quality": "Quality",
     "crop-apply": "Crop",
@@ -4719,7 +4721,10 @@ function translatePage(lang) {
   document.querySelector('#panel-resize .control-group:first-child label').textContent = t["resize-custom"];
   document.querySelector('#panel-resize .control-group:first-child div:first-child label').textContent = t["resize-width"];
   document.querySelector('#panel-resize .control-group:first-child div:last-child label').textContent = t["resize-height"];
-  document.querySelector('#panel-resize .checkbox-label').innerHTML = '<input type="checkbox" id="resize-lock" checked>' + t["resize-lock"];
+  var resizeLockLabel = document.querySelector('#panel-resize .checkbox-label');
+  var resizeLockInput = resizeLockLabel.querySelector('input');
+  resizeLockInput.checked = true;
+  resizeLockLabel.innerHTML = '<input type="checkbox" id="resize-lock" checked>' + t["resize-lock"];
   document.querySelector('#panel-resize .control-group:nth-child(2) label').textContent = t["resize-presets"];
   document.getElementById('resize-apply').textContent = t["resize-apply"];
   document.getElementById('resize-download').textContent = t["resize-download"];
@@ -4727,7 +4732,7 @@ function translatePage(lang) {
   document.querySelector('#watermark-upload h3').textContent = t["upload-click"];
   document.querySelector('#watermark-upload p').textContent = t["watermark-hint"];
   document.querySelector('#panel-watermark .control-group:first-child label').textContent = t["watermark-text"];
-  document.querySelector('#panel-watermark .control-group:nth-child(2)').innerHTML = '<label>' + t["watermark-position"] + ' <span style="font-weight:400;font-size:12px;color:var(--text-secondary)">(drag on preview)</span></label>';
+  document.querySelector('#panel-watermark .control-group:nth-child(2) label').innerHTML = t["watermark-position"] + ' <span style="font-weight:400;font-size:12px;color:var(--text-secondary)">(drag on preview)</span>';
   document.querySelector('#panel-watermark .control-row:first-child .control-group:first-child label').innerHTML = t["watermark-size"] + ': <span class="range-value" id="watermark-size-val">48</span>';
   document.querySelector('#panel-watermark .control-row:first-child .control-group:last-child label').innerHTML = t["watermark-opacity"] + ': <span class="range-value" id="watermark-opacity-val">50</span>%';
   document.querySelector('#panel-watermark .control-row:last-child .control-group:first-child label').textContent = t["watermark-color"];
@@ -4748,7 +4753,7 @@ function translatePage(lang) {
   document.querySelector('#idphoto-upload h3').textContent = t["upload-click"];
   document.querySelector('#idphoto-upload p').textContent = t["idphoto-hint"];
   document.querySelector('#idphoto-preview-container + p').textContent = t["idphoto-sample"];
-  document.querySelector('#idphoto-swatch span:first-child').textContent = "Sampled Color:";
+  document.querySelector('#idphoto-swatch span:first-child').textContent = t["idphoto-sample-label"] || "Sampled Color:";
   document.querySelector('#panel-idphoto .control-group:first-child label').innerHTML = t["idphoto-tolerance"] + ': <span class="range-value" id="idphoto-tolerance-val">60</span>';
   document.querySelector('#panel-idphoto .control-group:nth-child(2) label').textContent = t["idphoto-target"];
   document.querySelector('#panel-idphoto .control-group:nth-child(3) label').innerHTML = t["idphoto-edge"] + ': <span class="range-value" id="idphoto-edge-val">30</span>';
@@ -4762,9 +4767,12 @@ function translatePage(lang) {
   document.querySelector('#cutout-upload h3').textContent = t["upload-click"];
   document.querySelector('#cutout-upload p').textContent = t["cutout-hint"];
   document.querySelector('#cutout-preview-container + p').textContent = t["idphoto-sample"];
-  document.querySelector('#cutout-swatch span:first-child').textContent = "Sampled Color:";
+  document.querySelector('#cutout-swatch span:first-child').textContent = t["idphoto-sample-label"] || "Sampled Color:";
   document.querySelector('#panel-cutout .control-group:first-child label').innerHTML = t["idphoto-tolerance"] + ': <span class="range-value" id="cutout-tolerance-val">50</span>';
-  document.querySelector('#panel-cutout .checkbox-label').innerHTML = '<input type="checkbox" id="cutout-feather" checked>' + t["cutout-feather"];
+  var cutoutFeatherLabel = document.querySelector('#panel-cutout .checkbox-label');
+  var cutoutFeatherInput = cutoutFeatherLabel.querySelector('input');
+  cutoutFeatherInput.checked = true;
+  cutoutFeatherLabel.innerHTML = '<input type="checkbox" id="cutout-feather" checked>' + t["cutout-feather"];
   document.getElementById('cutout-apply').textContent = t["cutout-apply"];
   document.getElementById('cutout-reset').textContent = t["crop-reset"];
   document.getElementById('cutout-download').textContent = t["cutout-download"];
@@ -4779,14 +4787,20 @@ function translatePage(lang) {
   document.getElementById('grid9-download').textContent = t["grid9-download"];
   document.getElementById('grid9-merge-btn').textContent = t["grid9-merge-btn"];
   document.getElementById('grid9-merge-reset').textContent = t["grid9-merge-reset"];
-  document.querySelector('#grid9-merge-count').parentElement.innerHTML = t["grid9-merge-count"] + ' <span id="grid9-merge-count">0</span>/9 (' + t["grid9-merge-desc"] + ')';
+  var grid9MergeCountParent = document.querySelector('#grid9-merge-count').parentElement;
+  var grid9MergeCountSpan = grid9MergeCountParent.querySelector('#grid9-merge-count');
+  var currentCount = grid9MergeCountSpan.textContent;
+  grid9MergeCountParent.innerHTML = t["grid9-merge-count"] + ' <span id="grid9-merge-count">' + currentCount + '</span>/9 (' + t["grid9-merge-desc"] + ')';
   document.querySelector('#grid9-merge-compress').parentElement.previousElementSibling.textContent = t["grid9-compress"];
   document.querySelector('#grid9-merge-size').parentElement.previousElementSibling.textContent = t["grid9-size"];
   document.getElementById('grid9-merge-download').textContent = t["grid9-merge-download"];
   
   document.querySelector('#freepuzzle-upload h3').textContent = t["freepuzzle-hint"];
   document.querySelector('#freepuzzle-upload p').textContent = t["freepuzzle-desc"];
-  document.querySelector('#freepuzzle-count').parentElement.innerHTML = t["grid9-merge-count"] + ' <span id="freepuzzle-count">0</span>/12';
+  var freepuzzleCountParent = document.querySelector('#freepuzzle-count').parentElement;
+  var freepuzzleCountSpan = freepuzzleCountParent.querySelector('#freepuzzle-count');
+  var freepuzzleCurrentCount = freepuzzleCountSpan.textContent;
+  freepuzzleCountParent.innerHTML = t["grid9-merge-count"] + ' <span id="freepuzzle-count">' + freepuzzleCurrentCount + '</span>/12';
   document.querySelector('#freepuzzle-presets').parentElement.querySelector('label').textContent = t["freepuzzle-presets"];
   document.querySelector('#freepuzzle-workspace-wrap').parentElement.querySelector('span:first-child').textContent = t["freepuzzle-canvas"];
   document.querySelector('#freepuzzle-workspace-wrap').parentElement.querySelector('span:last-child').textContent = t["freepuzzle-canvas-hint"];
