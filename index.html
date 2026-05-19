@@ -4657,7 +4657,10 @@ function translatePage(lang) {
   document.title = t["page-title"];
   
   document.querySelector('.header h1').textContent = t["header-title"];
-  document.querySelector('.visitor-counter').innerHTML = '👁️ ' + t["visitor-count"] + ': <span id="visitor-count">0</span>';
+  var vcSpan = document.getElementById('visitor-count');
+  if (vcSpan && vcSpan.previousSibling) {
+    vcSpan.previousSibling.textContent = '👁️ ' + t["visitor-count"] + ': ';
+  }
   document.getElementById('reload-btn').textContent = t["reload-btn"];
   document.getElementById('tutorial-btn').textContent = t["tutorial-btn"];
   document.getElementById('about-btn').textContent = t["about-btn"];
