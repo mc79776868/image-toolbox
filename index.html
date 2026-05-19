@@ -2122,12 +2122,19 @@ input[type="color"] {
 // ============================================================
 function updateVisitorCounter() {
   const STORAGE_KEY = 'image-toolbox-visitor-count';
-  let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
-  count++;
-  localStorage.setItem(STORAGE_KEY, count.toString());
-  const countElement = document.getElementById('visitor-count');
-  if (countElement) {
-    countElement.textContent = count.toLocaleString();
+  try {
+    let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
+    count++;
+    localStorage.setItem(STORAGE_KEY, count.toString());
+    const countElement = document.getElementById('visitor-count');
+    if (countElement) {
+      countElement.textContent = count.toLocaleString();
+    }
+  } catch (e) {
+    const countElement = document.getElementById('visitor-count');
+    if (countElement) {
+      countElement.textContent = '-';
+    }
   }
 }
 
@@ -4405,7 +4412,6 @@ document.getElementById('freepuzzle-download').addEventListener('click', functio
 // Init
 // ============================================================
 console.log('🖼 Image Toolbox loaded');
-updateVisitorCounter();
 
 // ============================================================
 // Internationalization (i18n)
