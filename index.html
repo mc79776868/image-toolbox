@@ -1145,6 +1145,62 @@ input[type="color"] {
   #freepuzzle-presets .preset-btn { font-size: 12px; padding: 4px 10px; }
 }
 
+/* FAQ Styles */
+.faq-container {
+  border-radius: 12px;
+  overflow: hidden;
+}
+.faq-item {
+  border-bottom: 1px solid var(--border);
+}
+.faq-item:last-child {
+  border-bottom: none;
+}
+.faq-question {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  text-align: left;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background-color .2s;
+}
+.faq-question:hover {
+  background: rgba(210, 170, 135, 0.1);
+}
+.faq-question::after {
+  content: '▼';
+  font-size: 12px;
+  color: var(--text-secondary);
+  transition: transform .3s;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+.faq-question.active::after {
+  transform: rotate(180deg);
+}
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height .3s ease-out;
+}
+.faq-answer.open {
+  max-height: 200px;
+}
+.faq-answer p {
+  padding: 0 20px 16px;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
 </style>
 </head>
 <body>
@@ -2092,6 +2148,50 @@ input[type="color"] {
     </div>
     
   </div>
+
+  <div class="card">
+    <h2 style="font-size:22px;font-weight:700;margin:0 0 8px;display:flex;align-items:center;gap:10px;">❓ 常见问题</h2>
+    <p style="font-size:14px;color:var(--text-secondary);margin:0 0 20px;">有任何疑问？这里都有答案。</p>
+    
+    <div class="faq-container">
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">图片处理后质量会下降吗？</button>
+        <div class="faq-answer">
+          <p>不会。所有图片处理操作都在您的浏览器本地完成，不会经过服务器压缩。您可以通过调整质量参数来控制输出效果，高质量设置下几乎看不出差别。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">处理后的图片保存在哪里？</button>
+        <div class="faq-answer">
+          <p>处理后的图片不会自动保存，需要您手动点击下载按钮保存到本地。所有处理过程都在浏览器内存中进行，刷新页面后处理结果会丢失。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">支持处理多大的图片？</button>
+        <div class="faq-answer">
+          <p>理论上没有严格限制，但建议处理不超过10MB的图片。过大的图片可能会导致浏览器卡顿。如果遇到性能问题，可以先使用压缩功能减小图片大小。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">为什么有些功能需要上传图片后才能使用？</button>
+        <div class="faq-answer">
+          <p>图片处理功能需要读取图片的像素数据进行计算，必须先上传图片才能进行裁切、加水印、压缩等操作。上传的图片仅在浏览器中临时使用，不会上传到服务器。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">如何批量处理多张图片？</button>
+        <div class="faq-answer">
+          <p>目前版本暂不支持批量处理功能。您需要逐一处理每张图片。我们正在开发批量处理功能，敬请期待后续更新。</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">为什么处理后的图片颜色看起来不一样？</button>
+        <div class="faq-answer">
+          <p>这可能是图片格式转换导致的。例如PNG转JPEG时，透明区域会变成白色；WebP格式在某些旧浏览器中显示可能有差异。建议保持原始格式或根据使用场景选择合适的输出格式。</p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <footer class="footer">
@@ -2101,6 +2201,17 @@ input[type="color"] {
 <div class="toast" id="toast"></div>
 
 <script>
+// ============================================================
+// FAQ Toggle Function
+// ============================================================
+function toggleFaq(button) {
+  button.classList.toggle('active');
+  const answer = button.nextElementSibling;
+  if (answer && answer.classList.contains('faq-answer')) {
+    answer.classList.toggle('open');
+  }
+}
+
 // ============================================================
 // Shared State & Utilities
 // ============================================================
@@ -4774,6 +4885,8 @@ function translatePage(lang) {
 document.addEventListener('DOMContentLoaded', function() {
   console.log('[DOMContentLoaded] 页面加载完成，开始翻译');
   translatePage(getBrowserLang());
+  
+  
 });
 </script>
 </body>
