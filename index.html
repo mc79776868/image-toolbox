@@ -62,25 +62,7 @@ body {
   display: none;
 }
 
-.visitor-counter {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 16px;
-  border: 1px solid rgba(159, 78, 52, 0.25);
-  border-radius: 16px;
-  font-size: 13px;
-  color: var(--text-secondary);
-  background: var(--surface);
-  white-space: nowrap;
-  backdrop-filter: blur(10px);
-  box-shadow: var(--shadow);
-}
 
-#visitor-count {
-  font-weight: 700;
-  color: var(--primary);
-}
 
 /* Header */
 .header {
@@ -1171,7 +1153,7 @@ input[type="color"] {
   <div class="header-inner">
     <div class="header-logo">🖼</div>
     <h1>图片工具箱</h1>
-    <div class="visitor-counter">👁️ 访问量: <span id="visitor-count">0</span></div>
+    
     <button class="header-reload-btn" id="reload-btn">🔄 更换图片</button>
     <button class="header-tutorial-btn" id="tutorial-btn">📖 教程</button>
     <button class="header-tutorial-btn" id="about-btn">关于我们</button>
@@ -2119,34 +2101,6 @@ input[type="color"] {
 <div class="toast" id="toast"></div>
 
 <script>
-// ============================================================
-// Visitor Counter
-// ============================================================
-function updateVisitorCounter() {
-  const STORAGE_KEY = 'image-toolbox-visitor-count';
-  console.log('[updateVisitorCounter] 开始运行');
-  try {
-    let count = parseInt(localStorage.getItem(STORAGE_KEY)) || 0;
-    console.log('[updateVisitorCounter] 从 localStorage 读取到:', count);
-    count++;
-    localStorage.setItem(STORAGE_KEY, count.toString());
-    console.log('[updateVisitorCounter] 更新后为:', count, ' 已保存');
-    const countElement = document.getElementById('visitor-count');
-    if (countElement) {
-      countElement.textContent = count.toLocaleString();
-      console.log('[updateVisitorCounter] 已更新页面显示');
-    } else {
-      console.error('[updateVisitorCounter] 找不到 #visitor-count 元素!');
-    }
-  } catch (e) {
-    console.error('[updateVisitorCounter] localStorage 异常:', e);
-    const countElement = document.getElementById('visitor-count');
-    if (countElement) {
-      countElement.textContent = '-';
-    }
-  }
-}
-
 // ============================================================
 // Shared State & Utilities
 // ============================================================
@@ -4429,7 +4383,6 @@ const translations = {
   zh: {
     "page-title": "图片工具箱 - 在线图片处理",
     "header-title": "图片工具箱",
-    "visitor-count": "访问量",
     "reload-btn": "🔄 更换图片",
     "tutorial-btn": "📖 教程",
     "about-btn": "关于我们",
@@ -4543,7 +4496,6 @@ const translations = {
   en: {
     "page-title": "Image Toolbox - Online Image Processing",
     "header-title": "Image Toolbox",
-    "visitor-count": "Visitors",
     "reload-btn": "🔄 Change Image",
     "tutorial-btn": "📖 Tutorial",
     "about-btn": "About Us",
@@ -4669,22 +4621,6 @@ function translatePage(lang) {
   
   document.querySelector('.header h1').textContent = t["header-title"];
   
-  // 直接从 localStorage 读取最新计数（不从 DOM 读）
-  var savedCount = null;
-  try {
-    savedCount = localStorage.getItem('image-toolbox-visitor-count');
-  } catch (e) {}
-  
-  // 重建翻译文本
-  document.querySelector('.visitor-counter').innerHTML = '👁️ ' + t["visitor-count"] + ': <span id="visitor-count">0</span>';
-  
-  // 恢复 localStorage 中的计数
-  if (savedCount) {
-    var newVcSpan = document.getElementById('visitor-count');
-    if (newVcSpan) {
-      newVcSpan.textContent = savedCount;
-    }
-  }
   document.getElementById('reload-btn').textContent = t["reload-btn"];
   document.getElementById('tutorial-btn').textContent = t["tutorial-btn"];
   document.getElementById('about-btn').textContent = t["about-btn"];
@@ -4836,9 +4772,8 @@ function translatePage(lang) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('[DOMContentLoaded] 页面加载完成，开始翻译和更新计数');
+  console.log('[DOMContentLoaded] 页面加载完成，开始翻译');
   translatePage(getBrowserLang());
-  updateVisitorCounter();
 });
 </script>
 </body>
